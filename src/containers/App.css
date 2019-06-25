@@ -10,3 +10,8 @@ h1{
     font-weight:200;
     color: white;
 }
+
+.wrapper {
+    display: grid;
+    height: 100vh;
+}

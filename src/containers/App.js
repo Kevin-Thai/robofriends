@@ -1,11 +1,23 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import CardList from '../components/CardList';
-// import {robots} from './robots';
 import SearchBox from '../components/SearchBox';
 import ErrorBoundary from '../components/ErrorBoundary';
-import './App.css';
 import Scroll from '../components/Scroll'
+import './App.css';
+import {setSearchField } from '../actions';
 
+const mapStateToProps = state => {
+    return {
+        searchField: state.searchBots.searchField
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSearchChange: event => dispatch(setSearchField(event.target.value))
+    }
+}
 class App extends Component {
     constructor(){
         super()
@@ -21,7 +33,7 @@ class App extends Component {
             .then(users => this.setState({robots:users}));
     }
 
-    searchChanged = (event) => {
+    onSearchChange = (event) => {
         this.setState({searchfield: event.target.value})
     }
 
@@ -32,10 +44,10 @@ class App extends Component {
         })
         return !robots.length ? <h1>Loading...</h1> :
         (
-            <div className ='tc'>
+            <div className ='tc wrapper'>
                 <h1 className = 'f1'>RoboFriends</h1>
                 <SearchBox 
-                    searchChange={this.searchChanged} 
+                    searchChange={this.onSearchChange} 
                     searchField ={searchfield}/>
                 <Scroll>
                     <ErrorBoundary>
@@ -47,4 +59,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
